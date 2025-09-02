@@ -1,113 +1,69 @@
 import { MatchesByChampionship } from "@/components/matches-by-championship"
 
+function extractMatches(data) {
+  const result = [];
+
+  data.championshipsAgenda.forEach((agenda) => {
+    const allMatches = [...(agenda.future || []), ...(agenda.now || [])];
+
+    allMatches.forEach((event) => {
+      const match = event.match;
+
+      if (match.moment === "PAST") return;
+
+      result.push({
+        championshipName: agenda.championship.name,
+        firstContestant: {
+          badgePng: match.firstContestant.badgePng,
+          popularName: match.firstContestant.popularName,
+        },
+        secondContestant: {
+          badgePng: match.secondContestant.badgePng,
+          popularName: match.secondContestant.popularName,
+        },
+        phase:
+          (match.round !== null ? `Rodada ${match.round} - ` : "") +
+          `${match.phase.name}`,
+        location: match.location.popularName,
+        startDate: new Date(match.startDate).toISOString().split("T")[0],
+        startHour: match.startHour,
+      });
+    });
+  });
+
+  return result;
+}
+
+function getSportsSchedule() {
+  const url = "https://ge.globo.com/agenda/#/futebol/";
+
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+
+  await page.goto(url, { waitUntil: "networkidle2" });
+
+  const sportsData = await page.evaluate(() => {
+    return window.dataSportsSchedule?.sport || null;
+  });
+
+  await browser.close();
+  const today = new Date().toISOString().split("T")[0];
+  let todayMatches;
+
+  if (sportsData) {
+    const sportsDataToday = sportsData[today];
+    const filtered = extractMatches(sportsDataToday);
+
+    todayMatches = filtered.filter(
+      (m) => m.startDate === today
+    );
+  }
+
+  return todayMatches;
+}
+
 // Sample data - replace with your actual data source
-const matchesData = [
-  {
-    championshipName: "Campeonato Brasileiro Série B",
-    firstContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2024/05/07/AMRICA-mg-30.png",
-      popularName: "América-MG",
-    },
-    secondContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2024/05/12/avai30.png",
-      popularName: "Avaí",
-    },
-    phase: "Rodada 24 - Fase única",
-    location: "Independência",
-    startDate: "2025-09-02",
-    startHour: "19:30:00",
-  },
-  {
-    championshipName: "Campeonato Brasileiro sub-17",
-    firstContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2024/10/09/Corinthians-2024-30_AnBKqU3.png",
-      popularName: "Corinthians",
-    },
-    secondContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2014/04/14/palmeiras_30x30.png",
-      popularName: "Palmeiras",
-    },
-    phase: "Rodada 17 - Primeira fase",
-    location: "Santana de Parnaíba",
-    startDate: "2025-09-02",
-    startHour: "19:30:00",
-  },
-  {
-    championshipName: "Campeonato Brasileiro sub-17",
-    firstContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2020/07/02/atletico-go-2020-30.png",
-      popularName: "Atlético-GO",
-    },
-    secondContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2021/09/04/ESCUDO-VASCO-RGB_30px.png",
-      popularName: "Vasco",
-    },
-    phase: "Rodada 17 - Primeira fase",
-    location: "Antônio Accioly",
-    startDate: "2025-09-02",
-    startHour: "15:00:00",
-  },
-  {
-    championshipName: "Campeonato Brasileiro sub-17",
-    firstContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2014/04/14/bahia_30x30.png",
-      popularName: "Bahia",
-    },
-    secondContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2024/05/07/AMRICA-mg-30.png",
-      popularName: "América-MG",
-    },
-    phase: "Rodada 17 - Primeira fase",
-    location: "CT Evaristo de Macedo",
-    startDate: "2025-09-02",
-    startHour: "15:00:00",
-  },
-  {
-    championshipName: "Campeonato Brasileiro sub-17",
-    firstContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2014/04/14/sao_paulo_30x30.png",
-      popularName: "São Paulo",
-    },
-    secondContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2014/04/16/cuiaba30_.png",
-      popularName: "Cuiabá",
-    },
-    phase: "Rodada 17 - Primeira fase",
-    location: "Cotia",
-    startDate: "2025-09-02",
-    startHour: "15:00:00",
-  },
-  {
-    championshipName: "Campeonato Acreano Segunda Divisão",
-    firstContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2021/12/13/andira_30.png",
-      popularName: "Andirá",
-    },
-    secondContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2024/11/23/peq.png",
-      popularName: "Santa Cruz-AC",
-    },
-    phase: "Rodada 4 - Primeira fase",
-    location: "Arena da Floresta",
-    startDate: "2025-09-02",
-    startHour: "18:00:00",
-  },
-  {
-    championshipName: "Copa Paulista",
-    firstContestant: {
-      badgePng: "https://s.sde.globo.com/media/organizations/2012/01/05/comercial_sp_30.png",
-      popularName: "Comercial-SP",
-    },
-    secondContestant: {
-      badgePng: "https://s.sde.globo.com/media/teams/2015/01/11/intlim1.png",
-      popularName: "Inter de Limeira",
-    },
-    phase: "Oitavas de final",
-    location: "Palma Travassos",
-    startDate: "2025-09-02",
-    startHour: "20:00:00",
-  },
-]
+const matchesData = getSportsSchedule();
 
 export default function HomePage() {
   return (
