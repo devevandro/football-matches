@@ -1,4 +1,5 @@
 import { MatchesByChampionship } from "@/components/matches-by-championship"
+import puppeteer from "puppeteer";
 
 function extractMatches(data) {
   const result = [];
