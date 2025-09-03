@@ -1,3 +1,5 @@
+import vm from "vm";
+
 export type Match = {
   championshipName: string;
   firstContestant: {
