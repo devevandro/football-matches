@@ -1,27 +1,29 @@
 import { MatchCard } from "./match-card"
 
 interface Match {
-  championshipName: string
+  championshipName: string;
   firstContestant: {
-    badgePng: string
-    popularName: string
-  }
+    badgePng: string;
+    popularName: string;
+    score?: number | null;
+  };
   secondContestant: {
-    badgePng: string
-    popularName: string
-  }
-  phase: string
-  location: string
-  startDate: string
-  startHour: string
-}
+    badgePng: string;
+    popularName: string;
+    score?: number | null;
+  };
+  phase: string;
+  location: string;
+  startDate: string;
+  startHour: string;
+  moment?: "NOW" | "PAST" | "FUTURE";
+};
 
 interface MatchesByChampionshipProps {
   matches: Match[]
 }
 
 export function MatchesByChampionship({ matches }: MatchesByChampionshipProps) {
-  // Group matches by championship
   const matchesByChampionship = matches.reduce(
     (acc, match) => {
       if (!acc[match.championshipName]) {
