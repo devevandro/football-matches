@@ -1,0 +1,32 @@
+{
+  "name": "Jogos de Futebol - PWA",
+  "short_name": "Futebol PWA",
+  "description": "Acompanhe jogos de futebol em tempo real",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-420x420.png",
+      "sizes": "420x420",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["sports", "entertainment"],
+  "lang": "pt-BR"
+}
