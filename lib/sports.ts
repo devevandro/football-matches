@@ -59,7 +59,7 @@ const extractMatches = (data: any): Match[] => {
 };
 
 export const getSportsSchedule = async (): Promise<Match[]> => {
-  const url = "https://ge.globo.com/agenda/#/futebol/";
+  const url = process.env.NEXT_PUBLIC_URL || "";
 
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();

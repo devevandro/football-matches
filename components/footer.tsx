@@ -7,7 +7,7 @@ export default function Footer() {
       <p className="text-xs text-muted-foreground">
         Desenvolvido por IA 🤖 | By{" "}
         <a
-          href="https://github.com/devevandro"
+          href={process.env.NEXT_PUBLIC_GUTHUB_URL}
           target="_blank"
           className="hover:underline"
         >
