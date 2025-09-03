@@ -1,82 +1,50 @@
-import { MatchesByChampionship } from "@/components/matches-by-championship"
-import puppeteer from "puppeteer";
+"use client";
+import { useEffect, useState } from "react";
 
-function extractMatches(data) {
-  const result = [];
-
-  data.championshipsAgenda.forEach((agenda) => {
-    const allMatches = [...(agenda.future || []), ...(agenda.now || [])];
-
-    allMatches.forEach((event) => {
-      const match = event.match;
-
-      if (match.moment === "PAST") return;
-
-      result.push({
-        championshipName: agenda.championship.name,
-        firstContestant: {
-          badgePng: match.firstContestant.badgePng,
-          popularName: match.firstContestant.popularName,
-        },
-        secondContestant: {
-          badgePng: match.secondContestant.badgePng,
-          popularName: match.secondContestant.popularName,
-        },
-        phase:
-          (match.round !== null ? `Rodada ${match.round} - ` : "") +
-          `${match.phase.name}`,
-        location: match.location.popularName,
-        startDate: new Date(match.startDate).toISOString().split("T")[0],
-        startHour: match.startHour,
-      });
-    });
-  });
-
-  return result;
-}
-
-function getSportsSchedule() {
-  const url = "https://ge.globo.com/agenda/#/futebol/";
-
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
-
-  await page.goto(url, { waitUntil: "networkidle2" });
-
-  const sportsData = await page.evaluate(() => {
-    return window.dataSportsSchedule?.sport || null;
-  });
-
-  await browser.close();
-  const today = new Date().toISOString().split("T")[0];
-  let todayMatches;
-
-  if (sportsData) {
-    const sportsDataToday = sportsData[today];
-    const filtered = extractMatches(sportsDataToday);
-
-    todayMatches = filtered.filter(
-      (m) => m.startDate === today
-    );
-  }
-
-  return todayMatches;
-}
-
-// Sample data - replace with your actual data source
-const matchesData = getSportsSchedule();
+import Footer from "@/components/footer";
+import Header from "@/components/header";
+import { MatchesByChampionship } from "@/components/matches-by-championship";
+import { Match } from "@/lib/sports";
+import { LoadingScreen } from "@/components/loading-screen";
+import { ErrorScreen } from "@/components/error-screen";
 
 export default function HomePage() {
+  const [matchesData, setMatchesData] = useState<Match[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    const fetchMatches = async (): Promise<void> => {
+      const res = await fetch("/api/sports");
+      const data = await res.json();
+      setMatchesData(data);
+    };
+
+    fetchMatches()
+      .then(() => setIsLoading(false))
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+        setIsLoading(false);
+        setHasError(true);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (hasError) {
+    return <ErrorScreen />
+  }
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Jogos de Hoje</h1>
-          <p className="text-muted-foreground">Acompanhe os próximos jogos organizados por campeonato</p>
-        </header>
-
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-7xl">
+        <Header />
         <MatchesByChampionship matches={matchesData} />
+        <Footer />
       </div>
     </div>
-  )
+  );
 }
