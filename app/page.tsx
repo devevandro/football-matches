@@ -39,12 +39,14 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-7xl">
+    <div className="h-screen bg-background flex flex-col">
         <Header />
-        <MatchesByChampionship matches={matchesData} />
+        <main className="flex-1 overflow-y-auto pt-[180px] pb-[80px]">
+          <div className="container mx-auto px-3 sm:px-4 lg:px-6 max-w-7xl">
+            <MatchesByChampionship matches={matchesData} />
+          </div>
+        </main>
         <Footer />
-      </div>
     </div>
   );
 }
