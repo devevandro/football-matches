@@ -12,7 +12,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <HeaderBadges />
     </header>
   );
 }
