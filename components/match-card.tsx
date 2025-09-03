@@ -28,13 +28,14 @@ interface MatchCardProps {
 
 export function MatchCard({ match }: MatchCardProps) {
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
+  const date = new Date(dateString);
+  return date.toLocaleDateString("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
 
   const formatTime = (timeString: string) => {
     return timeString.slice(0, 5);
