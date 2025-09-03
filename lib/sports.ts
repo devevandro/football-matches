@@ -62,21 +62,27 @@ export const getSportsSchedule = async (): Promise<Match[]> => {
   const res = await fetch(url);
   const html = await res.text();
 
-  const regex = /window\.dataSportsSchedule\s*=\s*(\{.*?\});/s;
+  const regex = /window\.dataSportsSchedule\s*=\s*(\{[\s\S]*?\});/;
   const match = html.match(regex);
 
   if (!match || match.length < 2) {
     throw new Error("Não foi possível extrair dataSportsSchedule do HTML");
   }
 
-  const dataSportsSchedule = JSON.parse(match[1]);
+  const sandbox = {} as any;
+  vm.createContext(sandbox);
+  vm.runInContext(`data = ${match[1]}`, sandbox);
+
+  const dataSportsSchedule = sandbox.data;
   const sportsData = dataSportsSchedule.sport;
 
-  const today = new Date().toLocaleDateString("pt-BR").replace(/\//g, "-");
-  const [day, month, year] = today.split("-");
-  const invertedDate = `${year}-${month}-${day}`;
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  const todayKey = `${year}-${month}-${day}`;
 
-  const sportsDataToday = sportsData[invertedDate];
+  const sportsDataToday = sportsData[todayKey];
   if (!sportsDataToday) return [];
 
   return extractMatches(sportsDataToday);

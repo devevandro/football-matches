@@ -2,7 +2,7 @@ export default function Footer() {
   return (
     <footer className="mt-8 pt-6 border-t border-border text-center">
       <p className="text-xs text-muted-foreground">
-        Instale o app para receber notificações dos jogos
+        Instale o app para receber notificações dos jogos - Versão 1.0.0
       </p>
       <p className="text-xs text-muted-foreground">
         Desenvolvido por IA 🤖 | By{" "}
