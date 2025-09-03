@@ -1,5 +1,3 @@
-import HeaderBadges from "./header-badges";
-
 export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 bg-background border-b border-border z-10">
