@@ -1,5 +1,3 @@
-import puppeteer from "puppeteer";
-
 export type Match = {
   championshipName: string;
   firstContestant: {
@@ -61,23 +59,25 @@ const extractMatches = (data: any): Match[] => {
 export const getSportsSchedule = async (): Promise<Match[]> => {
   const url = process.env.NEXT_PUBLIC_URL || "";
 
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
+  const res = await fetch(url);
+  const html = await res.text();
 
-  await page.goto(url, { waitUntil: "networkidle2" });
+  const regex = /window\.dataSportsSchedule\s*=\s*(\{.*?\});/s;
+  const match = html.match(regex);
 
-  const sportsData = await page.evaluate(() => {
-    return (window as any).dataSportsSchedule?.sport || null;
-  });
+  if (!match || match.length < 2) {
+    throw new Error("Não foi possível extrair dataSportsSchedule do HTML");
+  }
 
-  await browser.close();
+  const dataSportsSchedule = JSON.parse(match[1]);
+  const sportsData = dataSportsSchedule.sport;
 
   const today = new Date().toLocaleDateString("pt-BR").replace(/\//g, "-");
-
   const [day, month, year] = today.split("-");
   const invertedDate = `${year}-${month}-${day}`;
 
   const sportsDataToday = sportsData[invertedDate];
-  const filtered = extractMatches(sportsDataToday);
-  return filtered;
+  if (!sportsDataToday) return [];
+
+  return extractMatches(sportsDataToday);
 };
