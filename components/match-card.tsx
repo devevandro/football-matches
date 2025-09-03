@@ -30,7 +30,7 @@ export function MatchCard({ match }: MatchCardProps) {
   const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("pt-BR", {
-    timeZone: "America/Sao_Paulo",
+    timeZone: "UTC",
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -89,7 +89,7 @@ export function MatchCard({ match }: MatchCardProps) {
 
           <div className="px-3 py-1 bg-muted rounded-md mx-2 flex-shrink-0">
             {match.firstContestant.score !== null &&
-            match.secondContestant.score !== null ? (
+              match.secondContestant.score !== null ? (
               <span className="text-xs font-bold text-foreground">
                 {match.firstContestant.score} - {match.secondContestant.score}
               </span>
