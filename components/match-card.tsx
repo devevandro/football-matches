@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CalendarDays, MapPin, Clock } from "lucide-react"
+import { CalendarDays, MapPin, Clock, Tv } from "lucide-react"
 import Image from "next/image"
 
 interface Match {
@@ -19,7 +19,9 @@ interface Match {
   location: string
   startDate: string
   startHour: string
-  moment: "NOW" | "PAST" | "FUTURE"
+  moment?: "NOW" | "PAST" | "FUTURE";
+  channelName?: string;
+  channelImage?: string;
 }
 
 interface MatchCardProps {
@@ -116,6 +118,11 @@ export function MatchCard({ match }: MatchCardProps) {
           <div className="flex items-center space-x-2 text-xs text-muted-foreground">
             <MapPin className="w-3 h-3" />
             <span className="truncate">{match.location}</span>
+          </div>
+
+          <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+            <Tv className="w-3 h-3" />
+            <span className="truncate">{match.channelName}</span>
           </div>
         </div>
       </CardContent>

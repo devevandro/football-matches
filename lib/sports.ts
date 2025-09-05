@@ -17,6 +17,8 @@ export type Match = {
   startDate: string;
   startHour: string;
   moment?: "NOW" | "PAST" | "FUTURE";
+  channelName?: string;
+  channelImage?: string;
 }
 
 const extractMatches = (data: any): Match[] => {
@@ -51,6 +53,8 @@ const extractMatches = (data: any): Match[] => {
         startDate: match.startDate,
         startHour: match.startHour,
         moment: match.moment,
+        channelName: match.liveWatchSources.name,
+        channelImage: match.liveWatchSources.officialLogoUrl,
       });
     });
   });

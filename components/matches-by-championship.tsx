@@ -17,6 +17,8 @@ interface Match {
   startDate: string;
   startHour: string;
   moment?: "NOW" | "PAST" | "FUTURE";
+  channelName?: string;
+  channelImage?: string;
 };
 
 interface MatchesByChampionshipProps {
