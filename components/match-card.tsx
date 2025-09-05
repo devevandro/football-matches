@@ -120,10 +120,10 @@ export function MatchCard({ match }: MatchCardProps) {
             <span className="truncate">{match.location}</span>
           </div>
 
-          <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+          {match.channelName !== '' && <div className="flex items-center space-x-2 text-xs text-muted-foreground">
             <Tv className="w-3 h-3" />
             <span className="truncate">{match.channelName}</span>
-          </div>
+          </div>}
         </div>
       </CardContent>
     </Card>
