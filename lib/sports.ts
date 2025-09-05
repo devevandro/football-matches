@@ -19,7 +19,7 @@ export type Match = {
   moment?: "NOW" | "PAST" | "FUTURE";
   channelName?: string;
   channelImage?: string;
-}
+};
 
 const extractMatches = (data: any): Match[] => {
   const result: Match[] = [];
@@ -28,7 +28,7 @@ const extractMatches = (data: any): Match[] => {
     const allMatches = [
       ...(agenda.future || []),
       ...(agenda.now || []),
-      ...(agenda.past || []),
+      ...(agenda.past || [])
     ];
 
     allMatches.forEach((event: any) => {
@@ -39,12 +39,12 @@ const extractMatches = (data: any): Match[] => {
         firstContestant: {
           badgePng: match.firstContestant.badgePng,
           popularName: match.firstContestant.popularName,
-          score: match.scoreboard ? match.scoreboard.home : "",
+          score: match.scoreboard ? match.scoreboard.home : ""
         },
         secondContestant: {
           badgePng: match.secondContestant.badgePng,
           popularName: match.secondContestant.popularName,
-          score: match.scoreboard ? match.scoreboard.away : "",
+          score: match.scoreboard ? match.scoreboard.away : ""
         },
         phase:
           (match.round !== null ? `Rodada ${match.round} - ` : "") +
@@ -53,8 +53,12 @@ const extractMatches = (data: any): Match[] => {
         startDate: match.startDate,
         startHour: match.startHour,
         moment: match.moment,
-        channelName: match.liveWatchSources.name,
-        channelImage: match.liveWatchSources.officialLogoUrl,
+        channelName:
+          match?.liveWatchSources !== null ? match?.liveWatchSources[0].name : "",
+        channelImage:
+          match?.liveWatchSources !== null
+            ? match?.liveWatchSources[0].officialLogoUrl
+            : ""
       });
     });
   });
