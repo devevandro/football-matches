@@ -28,7 +28,7 @@ const extractMatches = (data: any): Match[] => {
     const allMatches = [
       ...(agenda.future || []),
       ...(agenda.now || []),
-      ...(agenda.past || [])
+      ...(agenda.past || []),
     ];
 
     allMatches.forEach((event: any) => {
@@ -39,26 +39,28 @@ const extractMatches = (data: any): Match[] => {
         firstContestant: {
           badgePng: match.firstContestant.badgePng,
           popularName: match.firstContestant.popularName,
-          score: match.scoreboard ? match.scoreboard.home : ""
+          score: match.scoreboard ? match.scoreboard.home : "",
         },
         secondContestant: {
           badgePng: match.secondContestant.badgePng,
           popularName: match.secondContestant.popularName,
-          score: match.scoreboard ? match.scoreboard.away : ""
+          score: match.scoreboard ? match.scoreboard.away : "",
         },
         phase:
           (match.round !== null ? `Rodada ${match.round} - ` : "") +
           `${match.phase.name}`,
-        location: match.location.popularName,
+        location: match?.location !== null ? match.location.popularName : "",
         startDate: match.startDate,
         startHour: match.startHour,
         moment: match.moment,
         channelName:
-          match?.liveWatchSources !== null ? match?.liveWatchSources[0].name : "",
+          match?.liveWatchSources !== null
+            ? match?.liveWatchSources[0].name
+            : "",
         channelImage:
           match?.liveWatchSources !== null
             ? match?.liveWatchSources[0].officialLogoUrl
-            : ""
+            : "",
       });
     });
   });
