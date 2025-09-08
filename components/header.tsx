@@ -96,7 +96,7 @@ export default function Header({
               className={`w-1.5 h-1.5 ${activeFilter === "TABLES" ? "bg-muted" : "bg-orange-500"
                 } rounded-full`}
             ></div>
-            Tabelas/Competiçoes
+            Tabelas/Competições
           </button>
         </div>
       </div>
