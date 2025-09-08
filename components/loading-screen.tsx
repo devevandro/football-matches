@@ -9,7 +9,7 @@ export function LoadingScreen({ message }: LoadingScreenProps) {
     <div
       className={`${
         isComptetions
-          ? "flex flex-col items-center justify-center py-50 space-y-8"
+          ? "flex flex-col items-center justify-center py-30 space-y-8"
           : "h-screen"
       } bg-background flex flex-col items-center justify-center`}
     >
