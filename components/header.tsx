@@ -1,12 +1,18 @@
-type FilterType = "ALL" | "NOW" | "FUTURE" | "PAST";
+type FilterType = "ALL" | "NOW" | "FUTURE" | "PAST" | "TABLES";
 
 type HeaderProps = {
   setActiveFilter: (filter: FilterType) => void;
   activeFilter: FilterType;
   getMatchCount: (filter: FilterType) => number;
-}
+};
 
-export default function Header({ setActiveFilter, activeFilter, getMatchCount }: HeaderProps) {
+export default function Header({
+  setActiveFilter,
+  activeFilter,
+  getMatchCount
+}: HeaderProps) {
+  const removeAll = true;
+
   return (
     <header className="fixed top-0 left-0 right-0 bg-background border-b border-border z-10">
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 max-w-7xl">
@@ -22,16 +28,34 @@ export default function Header({ setActiveFilter, activeFilter, getMatchCount }:
         </div>
 
         <div className="flex items-center gap-2 pb-3">
+          {!removeAll && (
+            <button
+              onClick={() => setActiveFilter("ALL")}
+              className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                activeFilter === "ALL"
+                  ? "bg-foreground text-background"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+            >
+              <div className="w-1.5 h-1.5 bg-current rounded-full"></div>
+              Todos ({getMatchCount("ALL")})
+            </button>
+          )}
+
           <button
-            onClick={() => setActiveFilter("ALL")}
+            onClick={() => setActiveFilter("FUTURE")}
             className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              activeFilter === "ALL"
-                ? "bg-foreground text-background"
+              activeFilter === "FUTURE"
+                ? "bg-blue-500 text-white"
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
             }`}
           >
-            <div className="w-1.5 h-1.5 bg-current rounded-full"></div>
-            Todos ({getMatchCount("ALL")})
+            <div
+              className={`w-1.5 h-1.5 ${
+                activeFilter === "FUTURE" ? "bg-muted" : "bg-blue-500"
+              } rounded-full`}
+            ></div>
+            Hoje ({getMatchCount("FUTURE")})
           </button>
 
           <button
@@ -42,20 +66,12 @@ export default function Header({ setActiveFilter, activeFilter, getMatchCount }:
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
             }`}
           >
-            <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+            <div
+              className={`w-1.5 h-1.5 ${
+                activeFilter === "NOW" ? "bg-muted" : "bg-green-500"
+              } rounded-full`}
+            ></div>
             Ao vivo ({getMatchCount("NOW")})
-          </button>
-
-          <button
-            onClick={() => setActiveFilter("FUTURE")}
-            className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              activeFilter === "FUTURE"
-                ? "bg-blue-500 text-white"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
-          >
-            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
-            Hoje ({getMatchCount("FUTURE")})
           </button>
 
           <button
@@ -66,8 +82,28 @@ export default function Header({ setActiveFilter, activeFilter, getMatchCount }:
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
             }`}
           >
-            <div className="w-1.5 h-1.5 bg-gray-500 rounded-full"></div>
+            <div
+              className={`w-1.5 h-1.5 ${
+                activeFilter === "PAST" ? "bg-muted" : "bg-gray-500"
+              } rounded-full`}
+            ></div>
             Encerrado ({getMatchCount("PAST")})
+          </button>
+
+          <button
+            onClick={() => setActiveFilter("TABLES")}
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+              activeFilter === "TABLES"
+                ? "bg-orange-500 text-white"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
+          >
+            <div
+              className={`w-1.5 h-1.5 ${
+                activeFilter === "TABLES" ? "bg-muted" : "bg-orange-500"
+              } rounded-full`}
+            ></div>
+            Tabela
           </button>
         </div>
       </div>
