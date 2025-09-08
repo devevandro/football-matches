@@ -81,7 +81,7 @@ export default function Header({
                 className={`w-1.5 h-1.5 ${activeFilter === "PAST" ? "bg-muted" : "bg-gray-500"
                   } rounded-full`}
               ></div>
-              Encerrado ({getMatchCount("PAST")})
+              Encerrados ({getMatchCount("PAST")})
             </button>
           )}
 
@@ -96,7 +96,7 @@ export default function Header({
               className={`w-1.5 h-1.5 ${activeFilter === "TABLES" ? "bg-muted" : "bg-orange-500"
                 } rounded-full`}
             ></div>
-            Tabela
+            Tabelas/Competiçoes
           </button>
         </div>
       </div>

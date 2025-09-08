@@ -3,8 +3,16 @@ type LoadingScreenProps = {
 }
 
 export function LoadingScreen({ message }: LoadingScreenProps) {
+  const isComptetions = message.toLowerCase().includes("competições");
+
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
+    <div
+      className={`${
+        isComptetions
+          ? "flex flex-col items-center justify-center py-60 space-y-8"
+          : "h-screen"
+      } bg-background flex flex-col items-center justify-center`}
+    >
       <div className="text-center">
         <div className="mb-6">
           <div className="text-6xl animate-bounce">⚽</div>
