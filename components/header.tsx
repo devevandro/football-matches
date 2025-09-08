@@ -31,11 +31,10 @@ export default function Header({
           {!removeAll && (
             <button
               onClick={() => setActiveFilter("ALL")}
-              className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                activeFilter === "ALL"
+              className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${activeFilter === "ALL"
                   ? "bg-foreground text-background"
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
+                }`}
             >
               <div className="w-1.5 h-1.5 bg-current rounded-full"></div>
               Todos ({getMatchCount("ALL")})
@@ -44,64 +43,58 @@ export default function Header({
 
           <button
             onClick={() => setActiveFilter("FUTURE")}
-            className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              activeFilter === "FUTURE"
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${activeFilter === "FUTURE"
                 ? "bg-blue-500 text-white"
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
+              }`}
           >
             <div
-              className={`w-1.5 h-1.5 ${
-                activeFilter === "FUTURE" ? "bg-muted" : "bg-blue-500"
-              } rounded-full`}
+              className={`w-1.5 h-1.5 ${activeFilter === "FUTURE" ? "bg-muted" : "bg-blue-500"
+                } rounded-full`}
             ></div>
             Hoje ({getMatchCount("FUTURE")})
           </button>
 
           <button
             onClick={() => setActiveFilter("NOW")}
-            className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              activeFilter === "NOW"
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${activeFilter === "NOW"
                 ? "bg-green-500 text-white"
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
+              }`}
           >
             <div
-              className={`w-1.5 h-1.5 ${
-                activeFilter === "NOW" ? "bg-muted" : "bg-green-500"
-              } rounded-full`}
+              className={`w-1.5 h-1.5 ${activeFilter === "NOW" ? "bg-muted" : "bg-green-500"
+                } rounded-full`}
             ></div>
             Ao vivo ({getMatchCount("NOW")})
           </button>
 
-          <button
-            onClick={() => setActiveFilter("PAST")}
-            className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              activeFilter === "PAST"
-                ? "bg-gray-500 text-white"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
-          >
-            <div
-              className={`w-1.5 h-1.5 ${
-                activeFilter === "PAST" ? "bg-muted" : "bg-gray-500"
-              } rounded-full`}
-            ></div>
-            Encerrado ({getMatchCount("PAST")})
-          </button>
+          {getMatchCount("PAST") > 0 && (
+            <button
+              onClick={() => setActiveFilter("PAST")}
+              className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${activeFilter === "PAST"
+                  ? "bg-gray-500 text-white"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+            >
+              <div
+                className={`w-1.5 h-1.5 ${activeFilter === "PAST" ? "bg-muted" : "bg-gray-500"
+                  } rounded-full`}
+              ></div>
+              Encerrado ({getMatchCount("PAST")})
+            </button>
+          )}
 
           <button
             onClick={() => setActiveFilter("TABLES")}
-            className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              activeFilter === "TABLES"
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${activeFilter === "TABLES"
                 ? "bg-orange-500 text-white"
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
+              }`}
           >
             <div
-              className={`w-1.5 h-1.5 ${
-                activeFilter === "TABLES" ? "bg-muted" : "bg-orange-500"
-              } rounded-full`}
+              className={`w-1.5 h-1.5 ${activeFilter === "TABLES" ? "bg-muted" : "bg-orange-500"
+                } rounded-full`}
             ></div>
             Tabela
           </button>
